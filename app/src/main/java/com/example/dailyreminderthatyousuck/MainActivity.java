@@ -9,11 +9,9 @@ import android.view.View;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity {
-
-    String[] Quotes_input = {"Great","Good","NotsoGood"};
-    int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +37,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void launch_inputQuote(View v){
+        Intent i = new Intent(this, InputQuote.class);
+        startActivity(i);
+    }
+
     public void generate_quote(View v){
         Button button = (Button) v; //Casting it to class Button
-        wait(1000);
 
         button.setText("Generating...");
-        wait(1000);
-
         TextView genQuote = findViewById(R.id.QuoteOutput);
         genQuote.setText("Bitch ass motherfucker");
 
         wait(1000);
-        button.setText("Generate2");
+        button.setText("Generate");
 
     }
 }

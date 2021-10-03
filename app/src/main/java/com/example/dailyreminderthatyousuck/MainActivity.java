@@ -10,11 +10,13 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.content.Intent;
+//import android.os.Handler;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // When intialize activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
@@ -42,15 +44,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void generate_quote(View v){
+    public void generate_quote(View v) {
         Button button = (Button) v; //Casting it to class Button
 
-        button.setText("Generating...");
         TextView genQuote = findViewById(R.id.QuoteOutput);
         genQuote.setText("Bitch ass motherfucker");
-
-        wait(1000);
-        button.setText("Generate");
-
     }
 }

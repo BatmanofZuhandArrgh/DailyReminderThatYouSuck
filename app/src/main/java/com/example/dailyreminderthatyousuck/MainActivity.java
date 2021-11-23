@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public void launch_inputQuote(View v){
         Intent i = new Intent(this, InputQuote.class);
         startActivity(i);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     public void generate_quote(View v) {

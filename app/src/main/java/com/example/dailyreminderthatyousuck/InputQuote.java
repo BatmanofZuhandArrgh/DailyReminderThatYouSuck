@@ -8,8 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.FileOutputStream;
-import java.util.Arrays;
-import java.util.List;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -66,7 +64,7 @@ public class InputQuote extends AppCompatActivity {
             fos.write(text.getBytes());
             mEditText.getText().clear();
 
-            Toast.makeText(this, "save to " + getFilesDir() + "/" + filenameInternal, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "save to " + getFilesDir() + "/" + filenameInternal, Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             Log.e("Exception", e.toString());
         } catch (IOException e) {
@@ -112,6 +110,8 @@ public class InputQuote extends AppCompatActivity {
         return result;
     }
 
+
+
     public void inputText(View view) {
         //Get new input from the input_blank
         String input = mEditText.getText().toString();
@@ -141,6 +141,8 @@ public class InputQuote extends AppCompatActivity {
         View command = scrollViewLayOut.findViewById(id);
         Log.i("Removing"+String.valueOf(id), String.valueOf(id));
         scrollViewLayOut.removeView(command);
+        String s=String.valueOf(id);
+        Toast.makeText(this, "Remove button " + s, Toast.LENGTH_SHORT).show();
 
         String text = load();
         String[] individual_texts = text.split("\n");
@@ -149,7 +151,6 @@ public class InputQuote extends AppCompatActivity {
 
         String new_repo = TextUtils.join("\n", copy);
         save(new_repo, MODE_PRIVATE);
-
     }
 
     public void add_button(String str, ScrollView scrollView, int id){
@@ -162,6 +163,9 @@ public class InputQuote extends AppCompatActivity {
             newButton.setGravity( Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL );
             newButton.setText( str );
             newButton.setId(id);
+
+            String s=String.valueOf(id);
+            Toast.makeText(this, "Adding button " + s, Toast.LENGTH_SHORT).show();
 
             // Add button element to the LinearLayout element
             scrollViewLayOut.addView(newButton);
@@ -180,5 +184,7 @@ public class InputQuote extends AppCompatActivity {
     public void back_MainActivity(View view) {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+//        overridePendingTransition(R.anim.exit_right, R.anim.enter_right);
     }
 }

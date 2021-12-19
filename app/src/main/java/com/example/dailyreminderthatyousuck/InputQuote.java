@@ -49,6 +49,7 @@ public class InputQuote extends AppCompatActivity {
     public void show_scrollview(){
         String text = load();
         String[] individual_texts = text.split("\n");
+        Log.i("batman_test_tag", "This is my message");
 
         for (int i = 0; i < individual_texts.length; i = i + 1) {
             add_button(individual_texts[i], scrollView, i);

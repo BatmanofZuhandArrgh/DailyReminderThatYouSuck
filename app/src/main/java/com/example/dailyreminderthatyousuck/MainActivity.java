@@ -12,11 +12,12 @@ import android.widget.TextView;
 import android.content.Intent;
 //import android.os.Handler;
 
-public class MainActivity extends AppCompatActivity {
+public class
+MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // When intialize activity
+        // When initialize activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
@@ -26,26 +27,16 @@ public class MainActivity extends AppCompatActivity {
         Log.d("success", "Button disabled");
     }
 
-    public static void wait(int ms)
-    {
-        //Wait ms milliseconds
-        try
-        {
-            Thread.sleep(ms);
-        }
-        catch(InterruptedException ex)
-        {
-            Thread.currentThread().interrupt();
-        }
-    }
 
     public void launch_inputQuote(View v){
+        //Replace transitioning for inputQuote
         Intent i = new Intent(this, InputQuote.class);
         startActivity(i);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     public void generate_quote(View v) {
+        //Get button (GENERATE) and set text if pressed
         Button button = (Button) v; //Casting it to class Button
 
         TextView genQuote = findViewById(R.id.QuoteOutput);

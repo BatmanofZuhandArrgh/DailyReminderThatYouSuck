@@ -21,6 +21,8 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.speech.tts.TextToSpeech;
+
 
 public class InputQuote extends AppCompatActivity {
 
@@ -46,7 +48,7 @@ public class InputQuote extends AppCompatActivity {
         show_scrollview(); //Show ScrollView on creation
     }
 
-    private String[] get_all_quotes(){
+    public String[] get_all_quotes(){
         //Loading quotes from repo, and return them in a list
         String text = load();
 
@@ -55,8 +57,8 @@ public class InputQuote extends AppCompatActivity {
             individual_texts = new String[]{} ;
         }
 
-        Log.i("showing length Scroll View", String.valueOf(individual_texts.length));
-        Log.i("showing Scroll View", TextUtils.join(",", individual_texts));
+//        Log.i("showing length Scroll View", String.valueOf(individual_texts.length));
+//        Log.i("showing Scroll View", TextUtils.join(",", individual_texts));
 
         return individual_texts;
     }
@@ -78,7 +80,7 @@ public class InputQuote extends AppCompatActivity {
             fos.write(text.getBytes());
             mEditText.getText().clear();
 
-            Toast.makeText(this, "save to " + getFilesDir() + "/" + filenameInternal, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "save to " + getFilesDir() + "/" + filenameInternal, Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             Log.e("Exception", e.toString());
         } catch (IOException e) {
@@ -107,8 +109,8 @@ public class InputQuote extends AppCompatActivity {
             while ((text = br.readLine()) != null) {
                 sb.append(text).append('\n');
             }
-            result = result + sb.toString().trim();
-            Log.i("showing Scroll View full text", sb.toString().trim());
+            result = result + sb.toString();
+//            Log.i("showing Scroll View full text", sb.toString().trim());
 
         } catch (FileNotFoundException e) {
             Log.e("Exception", e.toString());
@@ -123,8 +125,7 @@ public class InputQuote extends AppCompatActivity {
                 }
             }
         }
-        result = result.trim();
-        return result;
+        return result.trim();
     }
 
     public void inputText(View view) {
@@ -171,24 +172,18 @@ public class InputQuote extends AppCompatActivity {
         }
     }
 
-    private void remove_button(int id){
+    public void remove_button(int id){
         View command = scrollViewLayOut.findViewById(id);
-        Log.i("Removing"+String.valueOf(id), String.valueOf(id));
+//        Log.i("Removing"+String.valueOf(id), String.valueOf(id));
         scrollViewLayOut.removeView(command);
     }
 
-    private void remove_all_buttons(){
+    public void remove_all_buttons(){
         String[] individual_texts = get_all_quotes();
-//        Log.i("Removing all buttons");
-
-//        String str = "n";
         // Adding buttons on Creation with all quotes saved in  filenameInternal
         for (int i = individual_texts.length; i >= 0; i = i - 1) {
             remove_button(i);
-//            str = String.valueOf(i);
         };
-//        String str = String.valueOf(i);
-//        Log.i("last index", str);
     }
 
     public void remove_button_n_quote(int id){
@@ -196,11 +191,10 @@ public class InputQuote extends AppCompatActivity {
 
         //Remove all buttons
         remove_all_buttons();
-//        wait(100);
 
         //Print with Toast
         String s=String.valueOf(id);
-        Toast.makeText(this, "Remove button " + s, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Remove button " + s, Toast.LENGTH_SHORT).show();
 
         String[] individual_texts = get_all_quotes();
 
@@ -240,8 +234,6 @@ public class InputQuote extends AppCompatActivity {
         );
         get_all_quotes();
     }
-
-
 
     public void back_MainActivity(View view) {
         Intent i = new Intent(this, MainActivity.class);

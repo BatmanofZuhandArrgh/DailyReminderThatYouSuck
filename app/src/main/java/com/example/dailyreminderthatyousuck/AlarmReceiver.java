@@ -19,8 +19,6 @@ public class AlarmReceiver extends BroadcastReceiver{
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText( context, "startService", Toast.LENGTH_SHORT).show();
-
         // we will use vibrator first
         Vibrator vibrator = (Vibrator) context.getSystemService(context.VIBRATOR_SERVICE);
         vibrator.vibrate(4000);
@@ -37,11 +35,11 @@ public class AlarmReceiver extends BroadcastReceiver{
 //        // play ringtone
 //        ringtone.play();
 
-        Toast.makeText( context, "startService", Toast.LENGTH_SHORT).show();
+//        Toast.makeText( context, "startService", Toast.LENGTH_SHORT).show();
         Intent serviceIntent = new Intent(context, Text2Speech.class);
-        context.startService(serviceIntent);
+        context.startForegroundService(serviceIntent);
 
-        Toast.makeText(context, "doneService", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "doneService", Toast.LENGTH_SHORT).show();
 
     }
 

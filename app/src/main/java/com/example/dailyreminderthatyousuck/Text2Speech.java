@@ -26,11 +26,17 @@ public class Text2Speech extends Service implements TextToSpeech.OnInitListener,
     public void onCreate() {
         super.onCreate();
         mTts = new TextToSpeech(this, this);
+
+        spokenText = "";
         spokenText_quote = get_random_quote();
         for (int i = 0; i < 10; i++) {
             spokenText = spokenText + ". " + spokenText_quote;
         }
-//        Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override public int onStartCommand(Intent intent, int flags, int startId) {
+//        the system will try to re-create your service after it is killed
+        return START_STICKY;
     }
 
     public String load() {
@@ -102,7 +108,6 @@ public class Text2Speech extends Service implements TextToSpeech.OnInitListener,
 
     @Override
     public void onInit(int status) {
-        Toast.makeText(this, "init", Toast.LENGTH_SHORT).show();
         if (status == TextToSpeech.SUCCESS) {
             int result = mTts.setLanguage(Locale.US);
             if (result != TextToSpeech.LANG_MISSING_DATA && result != TextToSpeech.LANG_NOT_SUPPORTED) {
@@ -123,11 +128,12 @@ public class Text2Speech extends Service implements TextToSpeech.OnInitListener,
             mTts.shutdown();
         }
         super.onDestroy();
+
+
     }
 
     @Override
     public IBinder onBind(Intent arg0) {
-//        Toast.makeText(this, "obBind", Toast.LENGTH_SHORT).show();
         return null;
     }
 

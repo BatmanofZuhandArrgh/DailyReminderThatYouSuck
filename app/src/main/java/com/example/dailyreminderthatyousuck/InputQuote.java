@@ -20,13 +20,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-import android.speech.tts.TextToSpeech;
+//import android.widget.Toast;
 
-
-public class InputQuote extends AppCompatActivity {
-
-    private static final String filenameInternal = "QuoteRepo.txt"; //Simple text file containing all quotes input
+public class InputQuote extends MainActivity {
     EditText mEditText; //Edit text blank
     ScrollView scrollView; // Scroll View
     LinearLayout scrollViewLayOut; // Content inside Scroll view
@@ -48,20 +44,6 @@ public class InputQuote extends AppCompatActivity {
         show_scrollview(); //Show ScrollView on creation
     }
 
-    public String[] get_all_quotes(){
-        //Loading quotes from repo, and return them in a list
-        String text = load();
-
-        String[] individual_texts = text.split("\n"); //Returns  [""] if empty string
-        if(text.length() == 0){
-            individual_texts = new String[]{} ;
-        }
-
-//        Log.i("showing length Scroll View", String.valueOf(individual_texts.length));
-//        Log.i("showing Scroll View", TextUtils.join(",", individual_texts));
-
-        return individual_texts;
-    }
 
     public void show_scrollview(){
         String[] individual_texts = get_all_quotes();
@@ -80,7 +62,7 @@ public class InputQuote extends AppCompatActivity {
             fos.write(text.getBytes());
             mEditText.getText().clear();
 
-//            Toast.makeText(this, "save to " + getFilesDir() + "/" + filenameInternal, Toast.LENGTH_SHORT).show();
+
         } catch (FileNotFoundException e) {
             Log.e("Exception", e.toString());
         } catch (IOException e) {
@@ -94,38 +76,6 @@ public class InputQuote extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    public String load() {
-        FileInputStream fis = null;
-        String result = "";
-        try {
-            fis = openFileInput(filenameInternal);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String text;
-
-            while ((text = br.readLine()) != null) {
-                sb.append(text).append('\n');
-            }
-            result = result + sb.toString();
-//            Log.i("showing Scroll View full text", sb.toString().trim());
-
-        } catch (FileNotFoundException e) {
-            Log.e("Exception", e.toString());
-        } catch (IOException e) {
-            Log.e("Exception", e.toString());
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    Log.e("Exception", e.toString());
-                }
-            }
-        }
-        return result.trim();
     }
 
     public void inputText(View view) {
@@ -144,7 +94,6 @@ public class InputQuote extends AppCompatActivity {
             String latest_text = individual_texts[individual_texts.length - 1];
             add_button(latest_text, scrollView, individual_texts.length-1);
         }
-
     }
 
     public String[] remove_array(String[] array, int id){
@@ -219,7 +168,6 @@ public class InputQuote extends AppCompatActivity {
         newButton.setText( str + ' ' + id); //FIXIT remove id from button
 
         String s=String.valueOf(id);
-        Toast.makeText(this, "Adding button " + s, Toast.LENGTH_SHORT).show();
 
         // Add button element to the LinearLayout element
         scrollViewLayOut.addView(newButton);
@@ -232,7 +180,7 @@ public class InputQuote extends AppCompatActivity {
             }
         }
         );
-        get_all_quotes();
+//        repoImport.get_all_quotes();
     }
 
     public void back_MainActivity(View view) {
@@ -240,5 +188,12 @@ public class InputQuote extends AppCompatActivity {
         startActivity(i);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 //        overridePendingTransition(R.anim.exit_right, R.anim.enter_right);
+    }
+
+    public void launch_Timer(View v){
+        //Replace transitioning for inputQuote
+        Intent j = new Intent(this, ReminderTimer.class);
+        startActivity(j);
+//        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 }

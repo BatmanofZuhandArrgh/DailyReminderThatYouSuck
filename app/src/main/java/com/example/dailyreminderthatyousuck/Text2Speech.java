@@ -1,60 +1,36 @@
 package com.example.dailyreminderthatyousuck;
 
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
+import android.widget.Toast;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.Thread;
 import java.util.Locale;
 import java.util.Random;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.TextView;
-import android.content.Intent;
-import android.speech.tts.TextToSpeech;
-
-
-public class MainActivity extends AppCompatActivity {
+public class Text2Speech extends Service implements TextToSpeech.OnInitListener, TextToSpeech.OnUtteranceCompletedListener {
+    public static TextToSpeech mTts;
+    private String spokenText_quote;
+    private String spokenText;
     public static final String filenameInternal = "QuoteRepo.txt"; //Simple text file containing all quotes input
-    TextToSpeech textToSpeech;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        // When initialize activity
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        //Text to speech object
-        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-
-                // if No error is found then only it will run
-                if(i!=TextToSpeech.ERROR){
-                    // To Choose language of speech
-                    textToSpeech.setLanguage(Locale.UK);
-                }
-            }
-        });
-    }
-
-    public void disable(View v){
-        v.setEnabled(false);
-        Log.d("success", "Button disabled");
-    }
-
-    public void launch_inputQuote(View v){
-        //Replace transitioning for inputQuote
-        Intent i = new Intent(this, InputQuote.class);
-        startActivity(i);
-//        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    public void onCreate() {
+        super.onCreate();
+        mTts = new TextToSpeech(this, this);
+        spokenText_quote = get_random_quote();
+        for (int i = 0; i < 10; i++) {
+            spokenText = spokenText + ". " + spokenText_quote;
+        }
+//        Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
     }
 
     public String load() {
@@ -107,25 +83,52 @@ public class MainActivity extends AppCompatActivity {
         return x;
     }
 
-    public int generate_quote(View v) {
-        //Get button (GENERATE) and set text if pressed
-        Button button = (Button) v; //Casting it to class Button
-        TextView genQuote = findViewById(R.id.QuoteOutput);
-
+    public String get_random_quote() {
         String[] individual_texts = get_all_quotes();
 
         if (individual_texts.length == 0) {
-            return 0;
+            return "";
         }
 
         int random_index = get_random_number(individual_texts.length - 1);
         String quote_generated = individual_texts[random_index];
 
-        //Show text
-        genQuote.setText(quote_generated);
-        //Speak
-        textToSpeech.speak(quote_generated,TextToSpeech.QUEUE_FLUSH,null);
-        return 0;
+        if (quote_generated.charAt(quote_generated.length() - 1) == '.') {
+            return quote_generated.substring(0,quote_generated.length() - 1);
+        }
+
+        return quote_generated;
+    }
+
+    @Override
+    public void onInit(int status) {
+        Toast.makeText(this, "init", Toast.LENGTH_SHORT).show();
+        if (status == TextToSpeech.SUCCESS) {
+            int result = mTts.setLanguage(Locale.US);
+            if (result != TextToSpeech.LANG_MISSING_DATA && result != TextToSpeech.LANG_NOT_SUPPORTED) {
+                mTts.speak(spokenText, TextToSpeech.QUEUE_FLUSH, null);
+            }
+        }
+    }
+
+    @Override
+    public void onUtteranceCompleted(String uttId) {
+        stopSelf();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mTts != null) {
+            mTts.stop();
+            mTts.shutdown();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public IBinder onBind(Intent arg0) {
+//        Toast.makeText(this, "obBind", Toast.LENGTH_SHORT).show();
+        return null;
     }
 
 }

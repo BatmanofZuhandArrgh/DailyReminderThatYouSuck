@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dailyreminderthatyousuck">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,6 +16,9 @@
             android:name=".InputQuote"
             android:windowSoftInputMode="adjustPan">
         </activity>
+        <activity
+            android:name=".ReminderTimer">
+        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +26,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver
+            android:process=":remote" android:name="AlarmReceiver">
+        </receiver>
+        <service android:name=".Text2Speech" />
     </application>
 
 </manifest>
